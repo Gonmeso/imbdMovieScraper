@@ -10,13 +10,13 @@ from time import sleep
 
 class imdbScraper():
 
-    url = 'https://www.imdb.com/search/title?title_type=feature&release_date={},{}&start={}&ref_=adv_prv'
     
     def __init__(self):
         self.startDate = None
         self.endDate = None
         self.total = 0
         self.iteraciones = 0
+        self.url = 'https://www.imdb.com/search/title?title_type=feature&release_date={},{}&start=1&ref_=adv_prv'
         self.movieList = [['title', 'duration', 'certificate', \
                         'genre', 'rating', 'directors', 'stars']]
 
@@ -27,6 +27,7 @@ class imdbScraper():
             endDate = datetime.strptime(args.endDate,"%Y-%m-%d").strftime("%Y-%m-%d")
             self.startDate = startDate
             self.endDate = endDate
+            self.url = self.url.format(startDate, endDate)
             print('Fechas actualizadas')
 
         except Exception as e:
@@ -41,6 +42,10 @@ class imdbScraper():
         total = int(total_span.find(text=True).split(" ")[2].replace(",",""))
         self.total = total
         print("Número total de películas: {}".format(total))
+    
+    def __updateUrl(self, html):
+        nextUrl = html.findAll('a', {'class':'lister-page-next'})[0]['href']
+        self.url = 'https://www.imdb.com/' + nextUrl
     
     def __updateIterations(self):
         self.iteraciones = ceil(self.total / 50)
@@ -127,12 +132,14 @@ class imdbScraper():
             sleep(1)
             
             start = (i*50)+1
-            response = requests.get(self.url.format(self.startDate, self.endDate,start))
+            response = requests.get(self.url)
             soup = BeautifulSoup(response.text,"html.parser")
 
             movies_div = soup.findAll('div', {"class" : "lister-item-content"} )
 
             self.__scrapMoviesInfo(movies_div)
+            if i != self.iteraciones -1:
+                self.__updateUrl(soup)
             print("Ronda {}: se han encontrado en total {} películas". format((i+1),
                                                                         len(self.movieList)-1))
         print("Web scraping finalizado con éxito!")
