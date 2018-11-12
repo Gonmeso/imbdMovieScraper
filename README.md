@@ -2,9 +2,9 @@
 
 ## Descripción
 
-Se tarta de una práctica para la asignatura Tipología y ciclo de vida de los datos del Máster de Data Science en la UOC.
+Se trata de una práctica para la asignatura Tipología y ciclo de vida de los datos del Máster de Data Science en la UOC.
 
-El cometido es relizar un web scrapper que permita obtener la información general de las películas publicadas en el portal de IMDB según unas fechas de entrada.
+El cometido es realizar un web scraper que permita obtener la información general de las películas publicadas en el portal de IMDB según unas fechas de entrada.
 
 ## Miembros del equipo
 
@@ -16,7 +16,7 @@ El cometido es relizar un web scrapper que permita obtener la información gener
 
   `python new_main.py --startDate 2018-01-01 --endDate 2018-12-30 --name test_dataset.csv`
 * **src/movieScraper.py**: clase `imdbScraper()` y la definición de sus método públicos y privados para realizar web scraping sobre IMDB.
-* **src/requirements.txt**: ficheros de requerimientos para la ejecución del scaper, se utiliza con el comando:
+* **src/requirements.txt**: ficheros de requerimientos para la ejecución del scraper, se utiliza con el comando:
 
   `pip install -r requirements.txt`
 * **src/imbd_2018_raw.csv**: fichero que contiene el dataset
